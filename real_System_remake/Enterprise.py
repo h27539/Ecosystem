@@ -415,7 +415,7 @@ class Enterprise:
         decay = self.reward_decay ** self.step  # ** 幂运算 decay = reward_decay的step次方
         #  total_reward ： 包含economy和business的字典 {'economy':0,'business':0}
         for key in self.total_reward:
-            self.total_reward[key] += self.reward[key] * decay
+            self.total_reward[key] += self.reward[key]
         self.step += 1
         return self.reward_train
 
