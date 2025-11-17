@@ -78,6 +78,12 @@ class PPO:
             start_factor=1.0,
             end_factor=0.3,
             total_iters=config.total_update)
+        self.critic_scheduler = LinearLR(
+            self.critic_optimizer,
+            start_factor=1.0,
+            end_factor=0.3,
+            total_iters=config.total_update,
+        )
 
     def set_global_seed(self, seed):
         # pytorch_seed
@@ -154,6 +160,7 @@ class PPO:
             value = self.critic(state_tensor).item()  # Critic 接收归一化后的状态
         return value
 
+
     def learn(self, final_state, agent_type: str):
         # 1. 从缓冲区获取并处理状态数据
         raw_old_states_np = np.array(self.states, dtype=np.float32)
@@ -205,9 +212,10 @@ class PPO:
             actor_loss_list = []
             critic_loss_list = []
             entropy_list, clip_frac_list = [], []
-
+            # 打乱索引
             shuffled_indices = torch.randperm(batch_size_total)
             stop_all = False  # NEW: 控制两层循环的早停
+            #滑动窗口切块 start_idx从0开始取，每次增加mini_batch_size，直到覆盖整个batch
             for start_idx in range(0, batch_size_total, self.mini_batch_size):
                 end_idx = min(start_idx + self.mini_batch_size, batch_size_total)
                 batch_indices = shuffled_indices[start_idx:end_idx]
@@ -227,8 +235,9 @@ class PPO:
                 surr1 = ratios * mini_batch_advantages
                 surr2 = torch.clamp(ratios, 1 - self.eps, 1 + self.eps) * mini_batch_advantages
                 actor_loss_per_batch = -torch.min(surr1, surr2).mean()
-
+                # std为方差 这里的熵等于 ln(std * sqrt(2 * pi * e)) = ln(std) + 0.5 * ln(2 * pi * e)
                 dist = torch.distributions.Normal(mu, std)
+                # dist.entropy()的形状是 (batch_size, action_dim)，里面每个元素是某个样本，某个动作维度的熵。.mean() 得到该 mini-batch 的平均熵值（标量）
                 entropy = dist.entropy().mean().item()
                 entropy_list.append(entropy)
 
@@ -298,6 +307,7 @@ class PPO:
             #        break
         if self.actor_scheduler.last_epoch < self.actor_scheduler.total_iters:
             self.actor_scheduler.step()
+            self.critic_scheduler.step()
 
         # === 模拟退火式 熵衰减 ===
         progress = self.actor_scheduler.last_epoch / self.actor_scheduler.total_iters
