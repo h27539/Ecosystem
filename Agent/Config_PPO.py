@@ -8,8 +8,8 @@ class Config_PPO:
                  action_dim: int,
                  hidden_dim: int,
                  # 基础参数
-                 gamma: float = 0.99,
-                 lamda: float = 0.95,
+                 gamma: float = 0.995,
+                 lamda: float = 0.90,
 
                  learning_rate_actor_bank: float = 0.000085,
                  learning_rate_actor_enterprise: float = 0.0001,
@@ -23,7 +23,7 @@ class Config_PPO:
                  total_step: int = 3500000,
 
                  clip_range: float = 0.1,
-                 n_epochs: int = 4,
+                 n_epochs: int = 6,
 
                  entropy_enterprise: float = 0.0065,
                  entropy_bank: float = 0.0035,

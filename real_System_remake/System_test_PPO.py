@@ -140,7 +140,7 @@ class System:
         update_num= 0
         episode_num = 1
 
-        while time_step < total_step and episode_num <=50000:
+        while time_step < total_step:
 
             # --- 数据收集阶段 ---
             for _ in range(update_timestep):
@@ -481,7 +481,7 @@ class System:
 
 if __name__ == '__main__':
     # for i in range(3):
-    seeds_to_run=[105]
+    seeds_to_run=[398]
     for seed in seeds_to_run:
         print(f"=== 启动 seed={seed} 的实验 ===")
         system = System()
