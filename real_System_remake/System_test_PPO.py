@@ -108,7 +108,7 @@ class System:
             "update_timestep": config.UPDATE_TIMESTEP,
             "total_update": config.MAX_TRAINING_STEPS / config.UPDATE_TIMESTEP,
             "lim-day": lim_day
-        },callbacks=[email_callback])
+        })
         # 1. PPO 超参数
         update_timestep = config.UPDATE_TIMESTEP
         # max_training_timesteps = config.MAX_TRAINING_STEPS
