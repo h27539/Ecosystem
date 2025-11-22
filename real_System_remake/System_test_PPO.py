@@ -98,7 +98,7 @@ class System:
             language="zh",
         )
         config = Config_PPO(scope='', state_dim=0, action_dim=0, hidden_dim=0)
-        wandb.init(project="CL_learn", workspace="wx829", config={
+        wandb.init(project="CL_learn", workspace="h27539", config={
             "random_seed": seed,
             "is_rms_state": config.is_rms_state,
             "is_rms_reward": config.is_rms_reward,

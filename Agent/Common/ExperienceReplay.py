@@ -14,7 +14,7 @@ from copy import deepcopy as COPY
 
 
 file_path = get_file_path_from_name(__file__)
-_er_kernel = CDLL(file_path + '/../cpp/bin/er_kernel.dll')
+_er_kernel = CDLL('Agent/cpp/bin/liber_kernel.dylib')
 
 LH_EPI_T = c_int64
 LH_REC_T = c_uint64

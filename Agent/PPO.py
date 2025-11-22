@@ -62,8 +62,14 @@ class PPO:
         self.avg_clip_frac = 0.0
 
         # 设备（GPU/CPU）
-        self.device = 'cuda' if torch.cuda.is_available() else 'cpu'
-        #self.device = 'cpu'
+        # self.device = 'cuda' if torch.cuda.is_available() else 'cpu'
+        # if torch.backends.mps.is_available():
+        #     self.device = 'mps'
+        # elif torch.cuda.is_available():
+        #     self.device = 'cuda'
+        # else:
+        #     self.device = 'cpu'
+        self.device = 'cpu'
         # 初始化网络和优化器
         # self.actor = PolicyNet(self.state_dim, self.hidden_dim, self.action_dim).to(self.device)
         # self.critic = ValueNet(self.state_dim, self.hidden_dim).to(self.device)
