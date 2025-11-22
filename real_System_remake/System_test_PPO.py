@@ -88,15 +88,7 @@ class System:
             self.Agent[key] = None
 
     def run(self,seed=None):
-        # 初始化邮件通知插件
-        email_callback = EmailCallback(
-            sender_email="1430074565@qq.com",
-            receiver_email="1430074565@qq.com",
-            password="clsbsjgkvsvhihig",
-            smtp_server="smtp.qq.com",
-            port=587,
-            language="zh",
-        )
+
         config = Config_PPO(scope='', state_dim=0, action_dim=0, hidden_dim=0)
         wandb.init(project="CL_learn", workspace="h27539", config={
             "random_seed": seed,
